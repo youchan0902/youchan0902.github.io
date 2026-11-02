@@ -1,0 +1,57 @@
+{
+  "name": "Youchan Choi",
+  "koreanName": "Youchan Choi",
+  "email": "dbcks0902@skku.edu",
+  "summary": "I research tactile sensors and robotic applications that measure contact force and position. My work covers sensor structures, circuit design, signal processing and experimental evaluation, as well as measurement and control for wearable robots.",
+  "education": [
+    {
+      "school": "Sungkyunkwan University",
+      "degree": "M.S. course in Intelligent Robotics",
+      "period": "2025.03–2027.02 (expected)",
+      "detail": "Robotics Innovatory Laboratory · Prof. Hyouk Ryeol Choi"
+    },
+    {
+      "school": "Sejong University",
+      "degree": "B.S. in Intelligent Mechatronics Engineering",
+      "period": "2021.07–2024.06",
+      "detail": "Intelligent Robotics Laboratory · Prof. Brian Byunghyun Kang"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Three-axis fingertip tactile sensing",
+      "period": "2025.03–2026.08",
+      "description": "Estimated three-axis force and contact position using capacitive sensors, integrated them into a robotic hand, and applied the outputs to grasp control.",
+      "status": "RA-L manuscript and patent in preparation",
+      "link": "fingertip.html"
+    },
+    {
+      "title": "Wearable hand robot and grasping strategy",
+      "period": "2021.09–2024.02",
+      "description": "Contributed to wearable robotic glove research on object properties and fingertip-force estimation. Developed tension/grasp-force measurement devices and actuator control.",
+      "link": "wearable-glove.html"
+    },
+    {
+      "title": "Wearable robot for flat back syndrome",
+      "period": "2024.03–2024.06",
+      "description": "Conducted sensing and control research for a wearable robot to assist posture and movement in people with flat back syndrome."
+    }
+  ],
+  "activities": [
+    "UR2022 · Oral presentation",
+    "ICCAS 2023 · Oral presentation",
+    "KROS 2025 · Poster presentation"
+  ],
+  "skills": [
+    "Altium",
+    "SolidWorks",
+    "Inventor",
+    "COMSOL",
+    "C",
+    "Python",
+    "MATLAB",
+    "LabVIEW",
+    "Unity",
+    "STM32CubeIDE"
+  ]
+}

@@ -42,3 +42,11 @@ python -m http.server 8000 --directory dist
 - Pretendard Variable 1.3.9를 `dist/fonts/`에서 직접 제공합니다. 라이선스는 같은 폴더에 포함했습니다.
 - `dist/media/gripper-demo.mp4`는 제공된 그리퍼 접촉 실험 영상의 웹용 사본입니다. 1080p, 29.2초, 음성을 유지했습니다.
 - `hand-hero-white.png`와 `fingertip-pcb-white.png`는 기존 이미지를 바탕으로 배경을 흰색으로 편집한 웹용 사본입니다. 연구 원본은 수정하지 않았습니다.
+
+## 한국어·영어 페이지
+
+- 한국어: `dist/index.html`, 영어: `dist/en/index.html`
+- `content/projects.en.json`, `content/cv.en.json`: 영어 연구·CV 본문
+- `content/ui.en.json`: 공통 UI와 홈페이지 문구의 영어 번역
+- 상단 언어 링크는 현재 페이지의 다른 언어 버전으로 이동합니다. 이미지·영상·PDF는 두 언어에서 공유합니다.
+- 영어 출력에 번역되지 않은 한글이 남으면 빌드가 중단됩니다. 연구 자료 이미지와 영상은 원본 콘텐츠를 사용합니다.

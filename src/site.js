@@ -1,3 +1,6 @@
+const isEnglish = document.documentElement.lang === 'en';
+const menuLabel = isEnglish ? 'Menu +' : '메뉴 +';
+const closeMenuLabel = isEnglish ? 'Close −' : '닫기 −';
 const menuButton = document.querySelector('.menu-toggle');
 const menu = document.querySelector('.nav-links');
 if (menuButton && menu) {
@@ -5,12 +8,12 @@ if (menuButton && menu) {
     const opened = menuButton.getAttribute('aria-expanded') !== 'true';
     menuButton.setAttribute('aria-expanded', String(opened));
     menu.classList.toggle('is-open', opened);
-    menuButton.textContent = opened ? '닫기 −' : '메뉴 +';
+    menuButton.textContent = opened ? closeMenuLabel : menuLabel;
   });
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     menuButton.setAttribute('aria-expanded', 'false');
     menu.classList.remove('is-open');
-    menuButton.textContent = '메뉴 +';
+    menuButton.textContent = menuLabel;
   }));
 }
 const images = [...document.querySelectorAll('[data-lightbox]')];

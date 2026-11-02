@@ -45,3 +45,14 @@ h1,h2,h3{letter-spacing:-.035em}.hero-copy h1{letter-spacing:-.055em;font-weight
 /* Prefer Arial for Latin letters and numerals; use Pretendard for Korean glyphs. */
 [lang="en"],.cv-entry h3,.cv-hero h1 span{letter-spacing:normal}
 .tags span{font-weight:500;letter-spacing:normal}.eyebrow,.brand small,.profile-entry small{letter-spacing:.035em}
+
+/* Contact details and equivalent Korean/English navigation. */
+.profile-contact{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 0;font-style:normal;font-size:14px;line-height:1.7;max-width:720px;color:var(--muted)}
+.profile-contact a{text-decoration:underline;text-underline-offset:4px;text-decoration-color:#bac7bf;overflow-wrap:anywhere}.profile-contact a:hover{color:var(--ink)}
+.language-switch{font-weight:700;border-bottom:1px solid #9caa8f;white-space:nowrap}
+html[lang="en"] .hero-copy h1{font-size:clamp(38px,4.5vw,65px);letter-spacing:-.04em}
+html[lang="en"] .project-hero h1{font-size:clamp(32px,3.5vw,50px)}
+html[lang="en"] .sensor-overlay text{font-size:33px}
+html[lang="en"] .project-copy h3{font-size:29px;line-height:1.22;letter-spacing:-.025em}
+@media(min-width:721px) and (max-width:1000px){.nav-links{gap:14px;font-size:13px}.nav{gap:15px}.brand small{font-size:9px}}
+@media(max-width:720px){.profile-contact{font-size:13px;gap:7px 16px}.cv-hero .profile-contact{display:grid;gap:8px}html[lang="en"] .hero-copy h1{font-size:40px}html[lang="en"] .project-copy h3{font-size:26px}html[lang="en"] .section-head h2{font-size:30px}}

@@ -1,0 +1,594 @@
+[
+  {
+    "id": "fingertip",
+    "number": "01",
+    "label": "FINGERTIP TACTILE SENSOR",
+    "title": "Three-Axis Fingertip\nTactile Sensor",
+    "shortTitle": "Three-Axis Fingertip Tactile Sensor",
+    "stage": "Sensor fabrication · Calibration · Robotic-hand experiments",
+    "hero": "fingertip-cutaway.png",
+    "heroCaption": "CAD cross-section of the fingertip sensor with four groups and twelve electrode sectors.",
+    "cardImage": "fingertip-hand-sensor.png",
+    "cardClass": "sensor-photo",
+    "intro": "Research on a three-axis tactile sensor for integration into robotic hands.",
+    "card": "Research on a three-axis tactile sensor for integration into robotic hands.",
+    "tags": [
+      "3-Axis Force",
+      "Contact Position",
+      "Integrated PCB"
+    ],
+    "metrics": [
+      [
+        "4 × 3",
+        "Groups × sectors",
+        "12 capacitance-sensing electrodes in total"
+      ],
+      [
+        "0–20 N",
+        "Rated normal-force range",
+        "Rated shear-force range: ±6 N per axis"
+      ],
+      [
+        "100 Hz",
+        "Sensor output",
+        "Force and position transmitted over CAN"
+      ]
+    ],
+    "sections": [
+      {
+        "id": "video",
+        "title": "Three-axis force and contact-position experiments",
+        "paragraphs": [
+          "The video shows contact-position and three-axis force estimates as a probe moves across the sensing surface and applies normal and shear loads."
+        ],
+        "video": {
+          "title": "Fingertip sensor: contact position and three-axis force",
+          "src": "fingertip-demo.mp4",
+          "poster": "fingertip-video-poster.jpg",
+          "caption": "Contact trajectories and normal/shear loading of the fingertip sensor · 1 min 3 sec"
+        }
+      },
+      {
+        "id": "design",
+        "title": "Sensor structure and sensing principle",
+        "paragraphs": [
+          "Four inverse-truncated-cone features sit beneath a continuous silicone contact surface. Each corresponding circular electrode is divided into three equal sectors. Normal compression increases the three capacitances together, while shear deformation produces differences between sectors. Common and differential signals are calibrated to estimate the three force components.",
+          "Building on the load-transfer structure of the single-axis gripper fingertip sensor by Park et al. (2025), this research introduces three-sector electrodes and three-axis calibration. It also shortens the fingertip assembly for robotic-hand integration and combines sensing, processing and communication circuits in one module."
+        ],
+        "specs": [
+          [
+            "Sensor dimensions",
+            "17.5 × 21.5 × 9 mm"
+          ],
+          [
+            "Electrode configuration",
+            "4 groups / 12 sectors"
+          ],
+          [
+            "Selected group spacing",
+            "6 mm"
+          ],
+          [
+            "Electronics",
+            "4-layer PCB · AD7147"
+          ],
+          [
+            "Contact structure",
+            "Conductive silicone + dielectric"
+          ],
+          [
+            "Outputs",
+            "Fx, Fy, Fz · contact position"
+          ]
+        ],
+        "note": "Dimensions exclude the finger mounting section. A 6 mm group spacing was selected within the 5–7 mm design range to suit the sensor size.",
+        "figures": [
+          {
+            "src": "fingertip-exploded.png",
+            "caption": "Exploded CAD view of the finger support, fasteners, sensing PCB, dielectric and conductive contact layer.",
+            "full": true,
+            "clean": true
+          },
+          {
+            "src": "three-sector-principle.png",
+            "caption": "Sector capacitance changes under normal compression and shear in two directions. Red and blue indicate increases and decreases schematically.",
+            "full": true
+          }
+        ]
+      },
+      {
+        "id": "calibration",
+        "title": "Electronics and calibration",
+        "paragraphs": [
+          "Three motorized stages and an AFT50-D15 reference force/torque sensor were used. After correcting unloaded offsets and aligning time and coordinate systems, the model was trained with 20 loading repetitions per axis. Evaluation used five separate repetitions per axis.",
+          "Normal forces are estimated from the capacitance sum within each group, and shear forces from differences between sectors. Weighted least-squares fitting reduces output on unloaded axes. The four groups’ normal-force contributions are used as weights to estimate contact position."
+        ],
+        "flow": [
+          "Unloaded baseline",
+          "20 training repetitions per axis",
+          "Force and position estimates",
+          "5 independent evaluation repetitions per axis"
+        ],
+        "figures": [
+          {
+            "src": "calibration-setup.png",
+            "caption": "Calibration setup with vertical and horizontal stages and a reference force/torque sensor."
+          },
+          {
+            "src": "fingertip-pcb-white.png",
+            "caption": "CAD rendering of the fingertip PCB integrating measurement, processing and communication circuits."
+          }
+        ]
+      },
+      {
+        "id": "results",
+        "title": "Force and contact-position estimation",
+        "paragraphs": [
+          "In independent force-tracking tests, RMSE was 0.251 N for normal force and 0.296 N and 0.304 N for the two shear components. The values below are from the calibration selected for force tracking."
+        ],
+        "table": {
+          "caption": "Force-tracking error in independent evaluation",
+          "headers": [
+            "Axis",
+            "Recorded evaluation load",
+            "RMSE"
+          ],
+          "rows": [
+            [
+              "Fz",
+              "0–20 N",
+              "0.251 N"
+            ],
+            [
+              "Fx",
+              "Approx. −5.4 to 6.9 N",
+              "0.296 N"
+            ],
+            [
+              "Fy",
+              "Approx. −5.4 to 8.0 N",
+              "0.304 N"
+            ]
+          ]
+        },
+        "after": [
+          "In a separate decoupling evaluation, zero-referenced RMSE between the two shear axes decreased to 0.066 N and 0.109 N. Force-tracking RMSE increased to 0.397 N and 0.391 N, illustrating the trade-off between cross-axis suppression and force tracking.",
+          "Contact position was evaluated at 14 locations using a 4 mm diameter probe under approximately 5 N. Three presses were pooled at each location to obtain a median estimate; the mean error of these representative positions was 0.074 mm. This is not an instantaneous error across the full surface or a measure of spatial resolution."
+        ],
+        "figures": [
+          {
+            "src": "force-validation.png",
+            "caption": "Estimated and reference normal/shear forces and error distributions for the force-tracking calibration."
+          },
+          {
+            "src": "contact-position.png",
+            "caption": "Reference positions and estimated medians at 14 contact locations. Each location summarizes three presses."
+          }
+        ]
+      },
+      {
+        "id": "robot",
+        "title": "Robotic-hand grasping experiments",
+        "paragraphs": [
+          "Sensors were mounted on an AIDIN-Hand for grasping, holding, release and external-disturbance experiments. Changes in shear force were used to adjust finger closing and increase grasp force.",
+          "The reference sensor attached to the object measures the external resultant force, while each fingertip sensor measures a local contact force. Because the load paths differ, differences in magnitude are not treated directly as sensor error."
+        ],
+        "figures": [
+          {
+            "src": "grasp-experiment.jpg",
+            "caption": "Robotic-hand grasping and disturbance-response experiments using fingertip contact forces to adjust the grasp.",
+            "full": true
+          },
+          {
+            "src": "contact-trajectories.png",
+            "caption": "Manual normal/shear contact and S, K, K, U trajectories: qualitative demonstrations of continuous position output.",
+            "full": true
+          }
+        ]
+      }
+    ],
+    "sourceNote": "Based on the master’s thesis research and fingertip sensor experiments. The earlier work on the inverse-truncated-cone load-transfer structure is linked below.",
+    "references": [
+      {
+        "title": "Park et al. — Tactile Sensor Integrated Fingertip Capable of Detecting Precise Contact Force for Robotic Grippers (IEEE TIE, 2025)",
+        "url": "https://doi.org/10.1109/TIE.2024.3468719"
+      }
+    ],
+    "cardRotation": 90
+  },
+  {
+    "id": "gripper",
+    "number": "02",
+    "label": "TACTILE SENSOR FOR GRIPPERS",
+    "title": "Three-Axis Tactile\nSensor for Grippers",
+    "shortTitle": "Three-Axis Gripper Tactile Sensor",
+    "stage": "Hardware fabrication · Three-axis loading · Gripper integration",
+    "hero": "gripper-sensor-cad.png",
+    "heroCaption": "Front, rear and side views and assembly CAD of the gripper tactile sensor.",
+    "cardImage": "gripper-sensor-cad.png",
+    "cardClass": "sensor-photo",
+    "intro": "Research on a three-axis tactile sensor for integration into robotic grippers.",
+    "card": "Research on a three-axis tactile sensor for integration into robotic grippers.",
+    "tags": [
+      "23 Groups · 69 Sectors",
+      "CAN FD",
+      "3-Axis Sensing"
+    ],
+    "metrics": [
+      [
+        "23 / 69",
+        "Groups / sectors",
+        "Three electrodes per group"
+      ],
+      [
+        "25 × 50 mm",
+        "Contact area",
+        "Gripper finger contact surface"
+      ],
+      [
+        "6 CDCs",
+        "Multichannel readout",
+        "CAN FD · 100 Hz output"
+      ]
+    ],
+    "sections": [
+      {
+        "id": "video",
+        "title": "Gripper contact demonstration",
+        "paragraphs": [
+          "The two tactile pads mounted on the gripper are pressed in turn to observe force and contact position. The left panel shows the physical contact; the right panel shows each pad’s contact position, force vector and three-axis time traces."
+        ],
+        "video": {
+          "title": "Gripper tactile sensor: force and contact-position demonstration",
+          "src": "gripper-demo.mp4",
+          "poster": "gripper-video-poster.jpg",
+          "caption": "Manual contact test of two tactile pads mounted on a gripper · 29 sec"
+        }
+      },
+      {
+        "id": "structure",
+        "title": "Electrode array and multichannel electronics",
+        "paragraphs": [
+          "The circular electrode is still divided into three sectors, while the number of groups increases from four to 23. Deformation of the conductive silicone and dielectric under contact load changes the capacitance of each sector.",
+          "Sensing electrodes and readout circuits are arranged on a four-layer PCB with six capacitance-to-digital converters. Sensing traces are organized into six active-shield regions."
+        ],
+        "specs": [
+          [
+            "Sensing array",
+            "23 groups / 69 sectors"
+          ],
+          [
+            "PCB / readout",
+            "4 layers / 6 CDCs"
+          ],
+          [
+            "Power supply",
+            "5 V"
+          ],
+          [
+            "Communication / output rate",
+            "CAN FD / 100 Hz"
+          ],
+          [
+            "Reported normal-force range",
+            "0–40 N"
+          ],
+          [
+            "Reported shear-force range",
+            "±15 N"
+          ]
+        ],
+        "figures": [
+          {
+            "src": "gripper-electrodes.png",
+            "caption": "Electrode side of the gripper PCB, with 23 three-sector groups distributed across the contact surface.",
+            "clean": true
+          },
+          {
+            "src": "gripper-readout.png",
+            "caption": "CAD view of the multichannel capacitance readout and communication circuits on the rear of the PCB.",
+            "clean": true
+          }
+        ]
+      },
+      {
+        "id": "fabrication",
+        "title": "Sensor fabrication and assembly",
+        "paragraphs": [
+          "The conductive contact layer and dielectric were molded, aligned with the electrode groups, and bonded in place. Calibration was performed after assembly because layer thickness, alignment and bonding conditions affect the signals."
+        ],
+        "figures": [
+          {
+            "src": "gripper-fabrication.png",
+            "caption": "Fabricated electrode PCB, dielectric, conductive silicone, and front and rear views of the assembled sensor.",
+            "full": true
+          },
+          {
+            "src": "gripper-pad-cad.png",
+            "caption": "CAD model of the assembled gripper tactile pad.",
+            "clean": true
+          }
+        ]
+      },
+      {
+        "id": "testing",
+        "title": "Three-axis comparison with a reference sensor",
+        "paragraphs": [
+          "Normal and two-axis shear loads were applied repeatedly using an AFT150 force/torque sensor as the reference. Reference signals were acquired through IXXAT Classical CAN and tactile signals through PCAN CAN FD, then aligned in time and coordinates.",
+          "The reference-loading procedure follows that of the fingertip sensor, with coefficients fitted for the gripper’s channel layout and assembled state. Compression is plotted as negative Fz in the records below."
+        ],
+        "figures": [
+          {
+            "src": "gripper-force-tracking.png",
+            "caption": "Reference and estimated normal and x/y shear forces. Hatched regions indicate validation intervals in the original record.",
+            "full": true
+          }
+        ]
+      }
+    ],
+    "sourceNote": "Based on gripper sensor design and fabrication records, reference-sensor comparisons and the integrated-sensor demonstration video."
+  },
+  {
+    "id": "wearable-glove",
+    "number": "03",
+    "label": "WEARABLE ROBOT GLOVE",
+    "title": "Object-Size Estimation\nwith a Wearable Robot Glove",
+    "shortTitle": "Wearable Robot Glove: Object-Size Estimation",
+    "stage": "Measurement hardware · Actuator control · Physical experiments",
+    "hero": "glove-objects.jpg",
+    "heroWide": true,
+    "heroCaption": "Physical glove experiments grasping a box, bottle and baseball.",
+    "cardImage": "glove-objects.jpg",
+    "cardClass": "glove",
+    "intro": "Research on object-size and grasp-force estimation with a wearable robotic glove.",
+    "card": "Research on object-size and grasp-force estimation with a wearable robotic glove.",
+    "tags": [
+      "Wearable Robot",
+      "Actuator Control",
+      "Object Size Estimation"
+    ],
+    "metrics": [
+      [
+        "2 motors",
+        "Glove actuation",
+        "Tendon-driven flexion and extension"
+      ],
+      [
+        "3 objects",
+        "Everyday-object experiments",
+        "Box · Bottle · Baseball"
+      ],
+      [
+        "2021–2024",
+        "Project period",
+        "2021.07–2024.02"
+      ]
+    ],
+    "sections": [
+      {
+        "id": "idea",
+        "title": "Object-size estimation from actuation signals",
+        "paragraphs": [
+          "In a tendon-driven glove, motors pull wires to assist finger flexion and extension. Object size changes when contact occurs and how far the wires move. This relationship was used to estimate object size from the actuation unit without adding sensors to the wearable glove."
+        ],
+        "figures": [
+          {
+            "src": "glove-system.jpg",
+            "caption": "Experimental system comprising the wearable glove, motor drive, wire-tension measurement and grasp-force reference device.",
+            "full": true
+          }
+        ]
+      },
+      {
+        "id": "hardware",
+        "title": "Measurement hardware and actuator control",
+        "paragraphs": [
+          "I developed the wire-tension measurement device, an adjustable-size grasp-force measurement device, and motor control. Tension was measured at the actuation unit, while reference grasp force came from a separate device serving as the grasped object.",
+          "Two motors drove glove flexion and extension while encoder and tension signals were collected. An adjustable test object was used to examine how object size relates to actuation state and grasp force."
+        ],
+        "figures": [
+          {
+            "src": "glove-hardware.jpg",
+            "caption": "Wire-tension measurement device and adjustable-size grasp-force measurement device.",
+            "full": true
+          }
+        ]
+      },
+      {
+        "id": "estimation",
+        "title": "Contact detection and grasp-force estimation",
+        "paragraphs": [
+          "Motor encoder and wire-tension signals were used to detect hand–object contact and estimate object size. The study examined an estimation pipeline combining LSTM and linear regression, then used estimated size as an input for grasp-force estimation."
+        ],
+        "flow": [
+          "Encoder and tension signals",
+          "Contact detection",
+          "Object-size estimation",
+          "Grasp-force estimation"
+        ]
+      },
+      {
+        "id": "objects",
+        "title": "Experiments with everyday objects",
+        "paragraphs": [
+          "Following the adjustable test object, experiments used a box, bottle and baseball. Objects with different sizes and shapes were grasped repeatedly to compare estimates."
+        ],
+        "table": {
+          "caption": "Objects used in physical experiments",
+          "headers": [
+            "Object",
+            "Dimension compared",
+            "Size"
+          ],
+          "rows": [
+            [
+              "Box",
+              "Short side",
+              "4.1 cm"
+            ],
+            [
+              "Bottle",
+              "Diameter",
+              "6.2 cm"
+            ],
+            [
+              "Baseball",
+              "Diameter",
+              "7.23 cm"
+            ]
+          ]
+        },
+        "figures": [
+          {
+            "src": "glove-objects.jpg",
+            "caption": "Grasping tests with a box, bottle and baseball to compare objects of different sizes and shapes.",
+            "full": true
+          }
+        ]
+      }
+    ],
+    "sourceNote": "Based on the research portfolio and experiment records. The platform is Exo-Glove Poly II; my contributions were measurement hardware, actuator control and data collection."
+  },
+  {
+    "id": "palm",
+    "number": "04",
+    "label": "FRINGING-FIELD TACTILE SENSING",
+    "title": "Palm Tactile Sensor Design\nUsing Fringing Fields",
+    "shortTitle": "Fringing-Field Palm Tactile Sensor Design",
+    "stage": "Capacitance simulation · Electrode and hardware design",
+    "hero": "palm-hardware-design.png",
+    "heroWide": true,
+    "heroCaption": "CAD design of the palm sensor with electrode PCB, dielectric, conductive contact layer and support.",
+    "cardImage": "palm-hardware-design.png",
+    "cardClass": "palm",
+    "intro": "Research on a three-axis palm tactile sensor design using fringing fields.",
+    "card": "Research on a three-axis palm tactile sensor design using fringing fields.",
+    "tags": [
+      "Electrostatic Simulation",
+      "4-Channel Design",
+      "Palm Sensing"
+    ],
+    "metrics": [
+      [
+        "4 channels",
+        "Electrode configuration",
+        "Differences of opposing channels and their mean"
+      ],
+      [
+        "±0.50 mm",
+        "Lateral displacement range",
+        "Simulations along the x and y axes"
+      ],
+      [
+        "0–0.25 mm",
+        "Compression displacement range",
+        "Comparison of capacitance responses"
+      ]
+    ],
+    "sections": [
+      {
+        "id": "principle",
+        "title": "Fringing fields and electrode arrangement",
+        "paragraphs": [
+          "At the edges of finite electrodes, the electric field extends beyond the overlap region. This is the fringing effect. Lateral motion changes both the overlap area and the edge field, whereas compression changes the electrode gap.",
+          "An initial lateral offset between the upper and lower electrodes was introduced to compare capacitance changes under lateral motion and compression. The calculated response includes both overlap-area and fringing-field effects."
+        ],
+        "figures": [
+          {
+            "src": "fringing-geometry.png",
+            "caption": "Definitions of electrode length, width, initial offset and dielectric gap. Schematic, not to scale.",
+            "full": true
+          }
+        ]
+      },
+      {
+        "id": "geometry",
+        "title": "Comparison of electrode geometries",
+        "paragraphs": [
+          "Electrode geometries were compared at a relative permittivity of 2.75 and an applied voltage of 1 V. Length and offset were varied first, followed by comparisons of how width and gap affect lateral and compression responses.",
+          "Within the investigated range, increasing width changed the compression response more than the absolute shear response. A length of 5 mm and widths of 2–3 mm were considered as candidates based on geometry and available area. The relationship between offset and width remains a design assumption requiring further comparison."
+        ],
+        "specs": [
+          [
+            "Electrode lengths compared",
+            "1–5 mm"
+          ],
+          [
+            "Electrode widths compared",
+            "1–5 mm"
+          ],
+          [
+            "Relative permittivity / applied voltage",
+            "2.75 / 1 V"
+          ],
+          [
+            "Single-electrode shear comparison",
+            "0.50 mm total travel"
+          ]
+        ],
+        "figures": [
+          {
+            "src": "fringing-parameter-study.png",
+            "caption": "Capacitance changes with electrode length, offset and width: electrostatic simulation results for prescribed displacements.",
+            "full": true
+          }
+        ]
+      },
+      {
+        "id": "response",
+        "title": "Four-channel displacement response",
+        "paragraphs": [
+          "Differences between opposing electrode channels form the x/y signals, while the channel mean forms the compression signal. In pure-axis displacement simulations, lateral capacitance spans were 385.78 fF and 385.79 fF, and the mean increase under compression was 80.58 fF."
+        ],
+        "table": {
+          "caption": "Simulated responses to pure-axis displacement",
+          "headers": [
+            "Response",
+            "Applied displacement",
+            "Capacitance change"
+          ],
+          "rows": [
+            [
+              "x differential",
+              "−0.50 to +0.50 mm",
+              "385.78 fF span"
+            ],
+            [
+              "y differential",
+              "−0.50 to +0.50 mm",
+              "385.79 fF span"
+            ],
+            [
+              "Compression mean",
+              "0 to 0.25 mm",
+              "80.58 fF increase"
+            ]
+          ]
+        },
+        "figures": [
+          {
+            "src": "fringing-three-axis-response.png",
+            "caption": "Pure-axis capacitance responses of the four-channel structure. The plotted outputs are capacitance, not force.",
+            "full": true
+          }
+        ],
+        "scope": "These simulations prescribe electrode displacement. Converting the response to contact force requires mechanical evaluation and force calibration that account for dielectric deformation and assembly conditions."
+      },
+      {
+        "id": "hardware",
+        "title": "Palm sensor hardware design",
+        "paragraphs": [
+          "The electrode PCB, dielectric, conductive silicone serving as the common moving electrode, and metal support were designed. The next steps are to fabricate the module, check the channel layout and initial capacitance, and compare controlled-displacement tests against reference force measurements."
+        ],
+        "figures": [
+          {
+            "src": "palm-hardware-design.png",
+            "caption": "Assembly CAD of the palm sensor. The work presented covers simulation and hardware design.",
+            "full": true
+          }
+        ]
+      }
+    ],
+    "sourceNote": "This research is at the electrostatic simulation and hardware CAD design stage. Capacitance values are calculated responses to prescribed electrode displacements."
+  }
+]
