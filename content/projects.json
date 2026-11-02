@@ -36,6 +36,19 @@
     ],
     "sections": [
       {
+        "id": "video",
+        "title": "3축 힘과 접촉 위치를 영상으로 확인하다",
+        "paragraphs": [
+          "실제 접촉 동작과 센서 출력을 나란히 보여주는 실험 영상입니다. 접촉 궤적을 따라가는 위치 출력과 수직·전단 방향 하중에 따른 반응을 확인할 수 있습니다."
+        ],
+        "video": {
+          "title": "손끝 촉각 센서의 접촉 위치 및 3축 힘 실험",
+          "src": "fingertip-demo.mp4",
+          "poster": "fingertip-video-poster.jpg",
+          "caption": "손끝 센서의 접촉 궤적 및 수직·전단 하중 시험 · 1분 3초"
+        }
+      },
+      {
         "id": "design",
         "title": "세 개의 전극으로 힘의 방향을 구분하다",
         "paragraphs": [
@@ -180,13 +193,14 @@
         "title": "Park et al. — Tactile Sensor Integrated Fingertip Capable of Detecting Precise Contact Force for Robotic Grippers (IEEE TIE, 2025)",
         "url": "https://doi.org/10.1109/TIE.2024.3468719"
       }
-    ]
+    ],
+    "cardRotation": 90
   },
   {
     "id": "gripper",
     "number": "02",
     "label": "TACTILE SENSOR FOR GRIPPERS",
-    "title": "넓은 접촉면을 위한\n그리퍼 촉각 센서",
+    "title": "그리퍼용 3축\n촉각 센서",
     "shortTitle": "그리퍼용 3축 촉각 센서",
     "stage": "하드웨어 제작 · 3축 하중 시험 · 그리퍼 장착",
     "hero": "gripper-sensor-cad.png",

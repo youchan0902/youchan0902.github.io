@@ -14,10 +14,13 @@ python -m http.server 8000 --directory dist
 브라우저에서 `http://localhost:8000`을 열어 확인합니다.
 
 - `content/projects.json`: 연구별 설명, 수치, 이미지 및 캡션
+- `content/cv.json`: 연구자 소개, 학력, 연구 경험 및 기술
 - `src/`: 공통 스타일과 브라우저 동작
-- `scripts/build.py`: 홈페이지와 연구 상세 페이지 생성
+- `scripts/build.py`: 홈페이지, 연구 상세 페이지 및 CV 페이지 생성
 - `dist/`: 배포할 HTML, CSS, JavaScript 및 이미지
 - `dist/assets/`: 공개 페이지에 사용하는 선별 이미지
+- `dist/media/fingertip-demo.mp4`: 1080p 손끝 센서 실험 영상 (약 11 MB)
+- `dist/documents/CV_YouchanChoi.pdf`: 제공된 CV 원본; `cv.html`에서 보기 및 다운로드
 
 설명과 화면 구성을 수정한 뒤 빌드를 다시 실행합니다. `dist/`에는 배포용 이미지 파일이 포함되어 있으므로 폴더 전체를 삭제하지 않습니다. 생성된 HTML을 직접 수정하면 다음 빌드에서 덮어쓰게 됩니다.
 

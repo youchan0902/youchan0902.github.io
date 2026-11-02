@@ -13,13 +13,25 @@ def head(title,description):
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{e(description,quote=True)}"><meta name="theme-color" content="#183536"><meta property="og:type" content="website"><meta property="og:title" content="{e(title,quote=True)}"><meta property="og:description" content="{e(description,quote=True)}"><title>{e(title)}</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="site.css?v={VERSION}"><script src="site.js?v={VERSION}" defer></script></head><body><a class="skip" href="#main">본문으로 건너뛰기</a>'''
 
 def nav():
-    return '''<header class="site-header"><nav class="wrap nav" aria-label="주요 메뉴"><a class="brand" href="index.html">최유찬<small>YOUCHAN CHOI / RESEARCH</small></a><button class="menu-toggle" aria-expanded="false" aria-controls="nav-links">메뉴 +</button><div class="nav-links" id="nav-links"><a href="index.html#research">연구 활동</a><a href="index.html#approach">연구 과정</a><a href="index.html#about">소개</a><a class="github-link" href="https://github.com/youchan0902" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav></header>'''
+    return '''<header class="site-header"><nav class="wrap nav" aria-label="주요 메뉴"><a class="brand" href="index.html">최유찬<small>YOUCHAN CHOI / RESEARCH</small></a><button class="menu-toggle" aria-expanded="false" aria-controls="nav-links">메뉴 +</button><div class="nav-links" id="nav-links"><a href="index.html#research">연구 활동</a><a href="index.html#approach">연구 과정</a><a href="cv.html">연구자 소개 · CV</a><a class="github-link" href="https://github.com/youchan0902" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></nav></header>'''
 
 def footer():
     return '''<footer class="wrap footer"><span>© 2026 YOUCHAN CHOI · TACTILE SENSING &amp; ROBOTICS</span><a href="https://github.com/youchan0902" target="_blank" rel="noopener noreferrer">GitHub / youchan0902 ↗</a></footer>'''
 
 def tags(values):return '<div class="tags">'+''.join('<span>'+e(x)+'</span>' for x in values)+'</div>'
 def paragraphs(values):return ''.join('<p>'+e(x)+'</p>' for x in values)
+
+def card_image(project):
+    if project.get('cardRotation') == 90:
+        # Rotate the original raster only in the page, retaining its exact pixels.
+        return '<svg class="rotated-research-image" viewBox="0 0 470 264" role="img" aria-label="로봇손의 손끝 촉각 센서와 내부 구조"><image href="assets/'+e(project['cardImage'])+'" width="264" height="470" transform="translate(470 0) rotate(90)"/></svg>'
+    return img(project['cardImage'],project['heroCaption'])
+
+def annotated_hand(source):
+    return '<a class="annotated-hand" href="fingertip.html" aria-label="손끝에 장착한 3축 촉각 센서 연구 보기">'+img(source,'촉각 센서가 장착된 실제 AIDIN-Hand 로봇손',False)+'''<svg class="sensor-overlay" viewBox="0 0 1243 1266" aria-hidden="true"><ellipse cx="240" cy="978" rx="92" ry="112"/><path d="M331 1012 L540 1100 L1005 1100"/><circle cx="331" cy="1012" r="7"/><rect x="540" y="1094" width="470" height="78" rx="5"/><text x="564" y="1144">3축 손끝 촉각 센서 ↗</text></svg></a>'''
+
+def research_video(video):
+    return '<figure class="video-figure"><video controls playsinline preload="none" poster="assets/'+e(video['poster'])+'" aria-label="'+e(video['title'],quote=True)+'"><source src="media/'+e(video['src'])+'" type="video/mp4"><p><a href="media/'+e(video['src'])+'">실험 영상 열기</a></p></video><figcaption>'+e(video['caption'])+'</figcaption></figure>'
 def img(src,alt,lazy=True,cls=''):
     assert (DIST/'assets'/src).is_file(),src
     return f'<img src="assets/{e(src)}" alt="{e(alt,quote=True)}" '+('loading="lazy" decoding="async"' if lazy else 'fetchpriority="high"')+(f' class="{cls}"' if cls else '')+'>'
@@ -50,6 +62,7 @@ def project_page(p,index):
             t=s['table'];out+='<div class="data-scroll" tabindex="0" role="region" aria-label="'+e(t['caption'],quote=True)+'"><table class="data-table"><caption>'+e(t['caption'])+'</caption><thead><tr>'+''.join('<th scope="col">'+e(v)+'</th>' for v in t['headers'])+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+e(v)+'</td>' for v in row)+'</tr>' for row in t['rows'])+'</tbody></table></div>'
         if 'after' in s:out+=paragraphs(s['after'])
         if 'figures' in s:out+=gallery(s['figures'])
+        if 'video' in s:out+=research_video(s['video'])
         if 'scope' in s:out+='<div class="scope"><strong>연구 범위</strong><br>'+e(s['scope'])+'</div>'
         out+='</section>'
     refs=''.join('<p><a href="'+e(ref['url'],quote=True)+'" target="_blank" rel="noopener noreferrer">'+e(ref['title'])+' ↗</a></p>' for ref in p.get('references',[]))
@@ -58,14 +71,35 @@ def project_page(p,index):
     out+='<div class="next-project"><div class="wrap next-inner"><div class="eyebrow">NEXT PROJECT / '+nxt['number']+'</div><a href="'+nxt['id']+'.html">'+e(nxt['shortTitle'])+' ↗</a></div></div>'+footer()+lightbox()+'</body></html>'
     (DIST/(p['id']+'.html')).write_text(out,encoding='utf-8')
 
+def cv_page():
+    cv=json.loads((ROOT/'content/cv.json').read_text('utf-8'))
+    pdf='documents/CV_YouchanChoi.pdf'
+    assert (DIST/pdf).is_file()
+    out=head('연구자 소개 · CV | 최유찬',cv['summary'])+nav()
+    out+='<main id="main" class="wrap cv-main"><a class="back" href="index.html">← 홈페이지</a><header class="cv-hero"><div><div class="eyebrow">RESEARCHER PROFILE / CURRICULUM VITAE</div><h1>'+e(cv['koreanName'])+'<span lang="en">'+e(cv['name'])+'</span></h1><p class="lead">'+e(cv['summary'])+'</p><a class="cv-email" href="mailto:'+e(cv['email'])+'">'+e(cv['email'])+'</a></div><div class="cv-intro"><span class="eyebrow">RESEARCH INTERESTS</span><h2>촉각 센서<br>로봇손<br>소프트 로보틱스</h2><p>성균관대학교 지능형로봇학과<br>석사과정</p></div></header>'
+    out+='<div class="cv-actions"><a class="button" href="'+pdf+'" target="_blank" rel="noopener noreferrer">CV PDF 보기 ↗</a><a class="text-link" href="'+pdf+'" download="CV_YouchanChoi.pdf">PDF 다운로드 ↓</a><a class="text-link" href="#cv-document">이 페이지에서 보기 ↓</a></div>'
+    out+='<div class="cv-grid"><section class="cv-section"><div class="eyebrow">EDUCATION</div><h2>학력</h2>'
+    for item in cv['education']:
+        out+='<article class="cv-entry"><span class="cv-period">'+e(item['period'])+'</span><h3>'+e(item['school'])+'</h3><p>'+e(item['degree'])+'</p><p class="cv-detail">'+e(item['detail'])+'</p></article>'
+    out+='</section><section class="cv-section"><div class="eyebrow">TOOLS & SKILLS</div><h2>사용 기술</h2>'+tags(cv['skills'])+'<div class="cv-conferences"><h3>학회 활동</h3><ul>'+''.join('<li>'+e(a)+'</li>' for a in cv['activities'])+'</ul></div></section></div>'
+    out+='<section class="cv-section"><div class="eyebrow">RESEARCH EXPERIENCE</div><h2>연구 경험</h2><div class="cv-experience">'
+    for item in cv['experience']:
+        out+='<article class="cv-entry"><span class="cv-period">'+e(item['period'])+'</span><h3>'+e(item['title'])+'</h3><p>'+e(item['description'])+'</p>'
+        if item.get('status'):out+='<p class="cv-detail">'+e(item['status'])+'</p>'
+        if item.get('link'):out+='<a class="text-link" href="'+e(item['link'])+'">관련 연구 보기 ↗</a>'
+        out+='</article>'
+    out+='</div></section><section class="cv-section cv-document" id="cv-document"><div class="section-head"><div><div class="eyebrow">CURRICULUM VITAE / PDF</div><h2>CV 원문</h2></div><a class="text-link" href="'+pdf+'" target="_blank" rel="noopener noreferrer">PDF로 크게 보기 ↗</a></div><a class="cv-preview" href="'+pdf+'" target="_blank" rel="noopener noreferrer" aria-label="최유찬 CV PDF 새 탭에서 열기">'+img('cv-preview.png','최유찬 영문 CV. 학력, 연구 경험, 학회 활동과 사용 기술을 담은 원문.')+'</a></section></main>'+footer()+'</body></html>'
+    (DIST/'cv.html').write_text(out,'utf-8')
+
 hero='hand-hero-clean.png' if (DIST/'assets/hand-hero-clean.png').exists() else 'hand-hero.png'
 home=head('최유찬 | Tactile Sensing & Robotics','최유찬의 촉각 센서와 로봇 연구. 3축 손끝 센서, 그리퍼 센서, 웨어러블 로봇 장갑과 프린징 효과 기반 손바닥 센서 설계를 소개합니다.')+nav()
-home+='''<main id="main"><div class="wrap"><section class="home-hero" aria-labelledby="hero-title"><div class="hero-copy"><div class="eyebrow">TACTILE SENSING &amp; ROBOTICS</div><h1 id="hero-title">로봇의 손끝에<br>감각을 더하다<em>.</em></h1><p class="lead">만지는 힘과 위치를 측정하고,<br>그 정보를 로봇의 동작으로 연결합니다.<br>센서 구조부터 회로, 캘리브레이션과 로봇 실험까지.</p><div class="hero-actions"><a class="button" href="#research">연구 살펴보기 <span aria-hidden="true">↘</span></a><a class="text-link" href="#about">연구자 소개 <span aria-hidden="true">↗</span></a></div></div><div class="hero-art"><span class="axis-label">Fx / Fy / Fz + CONTACT POSITION</span>'''+img(hero,'촉각 센서가 장착된 실제 AIDIN-Hand 로봇손',False)+'''<span class="image-credit">AIDIN-HAND / FINGERTIP TACTILE SENSOR<br>PROTOTYPE / BACKGROUND EDITED</span></div></section></div><div class="research-band"><div class="wrap band-inner"><div><span>RESEARCH FOCUS</span><strong>접촉을 측정하고, 활용하는 연구</strong></div><div><span>SENSE</span><strong>3축 힘 · 접촉 위치</strong></div><div><span>BUILD</span><strong>센서 구조 · 전장 설계</strong></div><div><span>INTERACT</span><strong>로봇손 · 그리퍼 · 장갑</strong></div></div></div><section class="wrap section" id="research"><div class="section-head"><div><div class="eyebrow">SELECTED RESEARCH / 01—04</div><h2>주요 연구 활동</h2></div><p>직접 제작한 하드웨어와 실제 실험을 중심으로 연구를 소개합니다. 각 프로젝트에서 설계와 검증이 어디까지 진행되었는지 함께 정리했습니다.</p></div><div class="project-list">'''
+home+='''<main id="main"><div class="wrap"><a class="profile-entry" href="cv.html"><span>연구자 소개<small>YOUCHAN CHOI · CV</small></span><b aria-hidden="true">↗</b></a><section class="home-hero" aria-labelledby="hero-title"><div class="hero-copy"><div class="eyebrow">TACTILE SENSING &amp; ROBOTICS</div><h1 id="hero-title">로봇의 손끝에<br>감각을 더하다<em>.</em></h1><p class="lead">만지는 힘과 위치를 측정하고,<br>그 정보를 로봇의 동작으로 연결합니다.<br>센서 구조부터 회로, 캘리브레이션과 로봇 실험까지.</p><div class="hero-actions"><a class="button" href="#research">연구 살펴보기 <span aria-hidden="true">↘</span></a><a class="text-link" href="cv.html">연구자 소개 · CV <span aria-hidden="true">↗</span></a></div></div><div class="hero-art"><span class="axis-label">Fx / Fy / Fz + CONTACT POSITION</span>'''+annotated_hand(hero)+'''<span class="image-credit">AIDIN-HAND / FINGERTIP TACTILE SENSOR<br>PROTOTYPE / BACKGROUND EDITED</span></div></section></div><div class="research-band"><div class="wrap band-inner"><div><span>RESEARCH FOCUS</span><strong>접촉을 측정하고, 활용하는 연구</strong></div><div><span>SENSE</span><strong>3축 힘 · 접촉 위치</strong></div><div><span>BUILD</span><strong>센서 구조 · 전장 설계</strong></div><div><span>INTERACT</span><strong>로봇손 · 그리퍼 · 장갑</strong></div></div></div><section class="wrap section" id="research"><div class="section-head"><div><div class="eyebrow">SELECTED RESEARCH / 01—04</div><h2>주요 연구 활동</h2></div><p>직접 제작한 하드웨어와 실제 실험을 중심으로 연구를 소개합니다. 각 프로젝트에서 설계와 검증이 어디까지 진행되었는지 함께 정리했습니다.</p></div><div class="project-list">'''
 for p in PROJECTS:
-    home+='<article class="project-row"><span class="project-number">'+p['number']+' /</span><div class="project-copy"><div class="eyebrow">'+p['label']+'</div><h3><a href="'+p['id']+'.html">'+e(p['title']).replace('\n','<br>')+'</a></h3><p>'+e(p['card'])+'</p><span class="status">'+e(p['stage'])+'</span>'+tags(p['tags'])+'<a class="text-link" href="'+p['id']+'.html">연구 자세히 보기 <span aria-hidden="true">↗</span></a></div><a class="project-visual '+p['cardClass']+'" href="'+p['id']+'.html" aria-label="'+e(p['shortTitle'],quote=True)+' 자세히 보기">'+img(p['cardImage'],p['heroCaption'] if p['id']!='fingertip' else '로봇손에 장착된 손끝 촉각 센서와 센서 구조')+'<span class="visual-index">'+p['number']+' / '+('SIMULATION & CAD' if p['id']=='palm' else 'RESEARCH ARCHIVE')+'</span></a></article>'
+    home+='<article class="project-row"><span class="project-number">'+p['number']+' /</span><div class="project-copy"><div class="eyebrow">'+p['label']+'</div><h3><a href="'+p['id']+'.html">'+e(p['title']).replace('\n','<br>')+'</a></h3><p>'+e(p['card'])+'</p><span class="status">'+e(p['stage'])+'</span>'+tags(p['tags'])+'<a class="text-link" href="'+p['id']+'.html">연구 자세히 보기 <span aria-hidden="true">↗</span></a></div><a class="project-visual '+p['cardClass']+'" href="'+p['id']+'.html" aria-label="'+e(p['shortTitle'],quote=True)+' 자세히 보기">'+card_image(p)+'<span class="visual-index">'+p['number']+' / '+('SIMULATION & CAD' if p['id']=='palm' else 'RESEARCH ARCHIVE')+'</span></a></article>'
 home+='''</div></section><section class="wrap section approach" id="approach"><div class="section-head"><div><div class="eyebrow">FROM DESIGN TO EXPERIMENT</div><h2>하드웨어와 실험을 잇는 과정</h2></div><p>접촉면의 변형, 전기적 신호, 추정 알고리즘과 로봇 동작을 하나의 실험 흐름으로 연결합니다.</p></div><div class="steps"><div class="step"><b>01 / DESIGN</b><h3>구조·전극 설계</h3><p>접촉 하중이 센서에 전달되는 구조와 전극 배치를 검토하고 시뮬레이션으로 비교합니다.</p></div><div class="step"><b>02 / BUILD</b><h3>제작·전장 통합</h3><p>실리콘 성형, PCB 제작과 조립을 거쳐 측정·처리·통신 회로를 통합합니다.</p></div><div class="step"><b>03 / CALIBRATE</b><h3>계측·캘리브레이션</h3><p>기준 센서와 비교하고 훈련과 평가 데이터를 나눠 힘·위치 추정 성능을 확인합니다.</p></div><div class="step"><b>04 / APPLY</b><h3>로봇 적용·시험</h3><p>센서를 손가락과 그리퍼에 장착하고 실제 접촉과 파지 과정에서 출력을 확인합니다.</p></div></div></section><section class="about" id="about"><div class="wrap about-grid"><div><div class="eyebrow">ABOUT / YOUCHAN CHOI</div><h2>최유찬<br><span lang="en">Youchan Choi</span></h2><p class="affiliation">성균관대학교 지능형로봇학과 · 석사과정<br>Department of Intelligent Robotics<br>Sungkyunkwan University</p><a class="text-link" href="https://github.com/youchan0902" target="_blank" rel="noopener noreferrer">GitHub 프로필 <span aria-hidden="true">↗</span></a></div><div class="about-copy"><p>촉각 센서와 로봇 응용을 연구합니다. 센서의 구조와 전장을 설계하고, 신호를 취득·분석해 접촉 힘과 위치를 추정하는 방법을 다룹니다.</p><p>손끝 센서를 로봇손에 적용하는 연구에서 시작해 더 넓은 그리퍼 접촉면과 손바닥 전극 설계로 범위를 넓히고 있습니다. 웨어러블 로봇 연구에서는 장력·파지력 측정 장치와 구동 제어를 담당했습니다.</p><div class="research-title"><span>MASTER'S THESIS RESEARCH</span><p lang="en">Capacitive Tactile Sensors for Three-Axis Force and Contact-Position Estimation in Robotic Applications</p></div></div></div></section></main>'''+footer()+'</body></html>'
 (DIST/'index.html').write_text(home,encoding='utf-8')
 for index,p in enumerate(PROJECTS):project_page(p,index)
+cv_page()
 (DIST/'favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#183536"/><path d="M32 12 49 22 32 32 15 22Z M15 27 29 35 29 52 15 43Z M49 27 35 35 35 52 49 43Z" fill="#c8da91"/></svg>',encoding='utf-8')
 (DIST/'.nojekyll').write_text('',encoding='utf-8')
-print('Built index + 4 research pages with shared styles and accessible image viewer.')
+print('Built homepage, four research pages, and CV page.')

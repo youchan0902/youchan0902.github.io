@@ -1,0 +1,17 @@
+{
+  "name": "Youchan Choi",
+  "koreanName": "최유찬",
+  "email": "dbcks0902@skku.edu",
+  "summary": "촉각 센서와 로봇손, 소프트 웨어러블 로봇을 연구합니다. 센서 구조·전장 설계와 계측, 힘·접촉 위치 추정을 로봇 응용으로 연결합니다.",
+  "education": [
+    {"school": "Sungkyunkwan University", "degree": "M.S. course in Intelligent Robotics", "period": "2025.03–2027.02 (expected)", "detail": "Robotics Innovatory Laboratory · Prof. Hyouk Ryeol Choi"},
+    {"school": "Sejong University", "degree": "B.S. in Intelligent Mechatronics Engineering", "period": "2021.07–2024.06", "detail": "Intelligent Robotics Laboratory · Prof. Brian Byunghyun Kang"}
+  ],
+  "experience": [
+    {"title": "Three-axis fingertip tactile sensing", "period": "2025.03–2026.08", "description": "정전용량 센서로 3축 힘과 접촉 위치를 추정하고, 로봇손에 통합해 파지 제어에 적용했습니다.", "status": "RA-L 논문 및 특허 진행 중 · 제공된 CV 기준", "link": "fingertip.html"},
+    {"title": "Wearable hand robot and grasping strategy", "period": "2021.09–2024.02", "description": "물체 특성과 손끝 힘을 추정하는 웨어러블 로봇 장갑 연구에 참여했습니다. 장력·파지력 측정 장치와 구동 제어를 담당했습니다.", "link": "wearable-glove.html"},
+    {"title": "Wearable robot for flat back syndrome", "period": "2024.03–2024.06", "description": "일자허리 증후군 사용자의 자세와 움직임을 보조하는 웨어러블 로봇의 센싱·제어 연구를 수행했습니다."}
+  ],
+  "activities": ["UR2022 · Oral presentation", "ICCAS 2023 · Oral presentation", "KROS 2025 · Poster presentation"],
+  "skills": ["Altium", "SolidWorks", "Inventor", "COMSOL", "C", "Python", "MATLAB", "LabVIEW", "Unity", "STM32CubeIDE"]
+}
