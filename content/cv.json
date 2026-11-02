@@ -2,7 +2,7 @@
   "name": "Youchan Choi",
   "koreanName": "최유찬",
   "email": "dbcks0902@skku.edu",
-  "summary": "접촉하는 힘과 위치를 측정하는 촉각 센서와 로봇 응용을 연구합니다. 센서 구조·회로 설계, 신호 처리와 실험 평가를 수행하며, 웨어러블 로봇의 계측·제어 연구에도 참여했습니다.",
+  "summary": "촉각 센서와 로봇 응용 연구. 센서 구조·회로 설계, 힘·접촉 위치 추정과 실험 평가를 수행하며 웨어러블 로봇 계측·제어 연구에도 참여.",
   "education": [
     {
       "school": "Sungkyunkwan University",
@@ -21,20 +21,20 @@
     {
       "title": "Three-axis fingertip tactile sensing",
       "period": "2025.03–2026.08",
-      "description": "정전용량 센서로 3축 힘과 접촉 위치를 추정하고, 로봇손에 통합해 파지 제어에 적용했습니다.",
+      "description": "정전용량 기반 3축 힘·접촉 위치 추정과 로봇손 통합, 파지 제어 적용.",
       "status": "RA-L 논문 및 특허 준비 중",
       "link": "fingertip.html"
     },
     {
       "title": "Wearable hand robot and grasping strategy",
       "period": "2021.09–2024.02",
-      "description": "물체 특성과 손끝 힘을 추정하는 웨어러블 로봇 장갑 연구에 참여했습니다. 장력·파지력 측정 장치와 구동 제어를 담당했습니다.",
+      "description": "물체 특성·손끝 힘 추정을 위한 웨어러블 로봇 장갑 연구 참여. 장력·파지력 측정 장치와 구동 제어 담당.",
       "link": "wearable-glove.html"
     },
     {
       "title": "Wearable robot for flat back syndrome",
       "period": "2024.03–2024.06",
-      "description": "일자허리 증후군 사용자의 자세와 움직임을 보조하는 웨어러블 로봇의 센싱·제어 연구를 수행했습니다."
+      "description": "일자허리 증후군 사용자의 자세·움직임 보조를 위한 웨어러블 로봇 센싱·제어 연구."
     }
   ],
   "activities": [
