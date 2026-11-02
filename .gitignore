@@ -1,0 +1,18 @@
+# Local development and Python cache files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local service metadata and credentials
+.openai/
+.env
+.env.*
+!.env.example
+
+# Keep dist/ tracked: it contains the curated website images.
